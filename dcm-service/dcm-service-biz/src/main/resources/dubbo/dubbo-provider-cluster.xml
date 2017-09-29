@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-lazy-init="true">
+
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="dubbo_provider_biz" />
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<!-- <dubbo:registry address="zookeeper://192.168.1.166:2181" check="false"/> -->
+	<!-- 集群 -->
+	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}"
+		check="false" />
+
+	<!-- 用dubbo协议在20880端口暴露服务，端口可自定义，可用于dubbo伪集群方式 -->
+	<dubbo:protocol name="dubbo" port="20880" />
+	<!-- 定义监控中心 -->
+	<!-- <dubbo:monitor address="192.168.1.166:7070" /> -->
+	<dubbo:monitor address="${dubbo.monitor.address}" />
+
+	<!-- 声明需要暴露的服务接口，集群默认方式（cluster）：failover；负载均衡策略（loadbalance）：random，随机 -->
+
+	<!-- 通用服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.CommonService"
+		ref="CommonService" version="${dubbo.service.version}" />
+
+	<!-- 讨论组和项目组服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.GroupService"
+		ref="GroupService" version="${dubbo.service.version}">
+		<dubbo:method name="addGroup" retries="0" />
+	</dubbo:service>
+
+	<!-- 角色服务 -->
+	<!-- <dubbo:service cluster="failover" retries="2" timeout="4000" loadbalance="random" 
+		interface="com.dist.bdf.facade.service.RoleService" ref="RoleService" version="${dubbo.service.version}" 
+		/> -->
+
+	<!-- 权限服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.PrivilegeService"
+		ref="PrivService" version="${dubbo.service.version}" />
+	<!-- 共享服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.ShareService"
+		ref="ShareService" version="${dubbo.service.version}">
+		<dubbo:method name="getPersonalShareWholeInfo" timeout="3600000" />
+	</dubbo:service>
+	<!-- ecm服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.EcmMgmtService"
+		ref="EcmMgmtService" version="${dubbo.service.version}">
+		<dubbo:method name="createTeamspace" retries="0" timeout="6000" />
+		<dubbo:method name="fullTextSearchOfDocumentCloud"
+			retries="2" timeout="10000" />
+		<dubbo:method name="fullTextSearchOfDocumentRank"
+			retries="2" timeout="10000" />
+		<dubbo:method name="preciseQueryByFileType" retries="2"
+			timeout="5000" />
+		<dubbo:method name="preciseQueryByRegion" retries="2"
+			timeout="5000" />
+		<dubbo:method name="preciseQueryByOrganization" retries="2"
+			timeout="5000" />
+		<dubbo:method name="preciseQueryByBusiness" retries="2"
+			timeout="5000" />
+		<!-- 一个小时 -->
+		<dubbo:method name="getDocContentStream" retries="2"
+			timeout="3600000" />
+	</dubbo:service>
+	<!-- 社交化服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.SocialService"
+		ref="SocialService" version="${dubbo.service.version}" />
+
+	<!-- office online服务 -->
+	<dubbo:service cluster="failover" retries="2"
+		loadbalance="random" interface="com.dist.bdf.facade.service.DOfficeWebService"
+		ref="DOfficeWebService" version="${dubbo.service.version}" timeout="60000" />
+
+	<!-- eds服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.EdsService"
+		ref="EdsService" version="${dubbo.service.version}" />
+
+	<!-- 通用资料 -->
+	<dubbo:service cluster="failover" retries="2" timeout="60000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.MaterialService"
+		ref="CommonMaterialService" version="${dubbo.service.version}">
+		<dubbo:method name="getMaterialInfo" timeout="10000" />
+		<dubbo:method name="getSubFoldersPage" timeout="10000" />
+		<dubbo:method name="getSubDocsPage" timeout="10000" />
+	</dubbo:service>
+
+	<!-- 个人资料 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.PersonalMaterialService"
+		ref="PersonalMaterialService" version="${dubbo.service.version}">
+		<!-- <dubbo:method name="getMaterialInfo" timeout="10000" /> -->
+	</dubbo:service>
+
+	<!-- 所级资料 -->
+	<dubbo:service cluster="failover" retries="2" timeout="8000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.DepartmentMaterialService"
+		ref="DepartmentMaterialService" version="${dubbo.service.version}">
+	</dubbo:service>
+	<!-- 院级资料 -->
+	<dubbo:service cluster="failover" retries="2" timeout="8000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.InstituteMaterialService"
+		ref="InstituteMaterialService" version="${dubbo.service.version}">
+	</dubbo:service>
+	<!-- 项目级资料 -->
+	<dubbo:service cluster="failover" retries="2" timeout="8000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.ProjectMaterialService"
+		ref="ProjectMaterialService" version="${dubbo.service.version}">
+	</dubbo:service>
+
+	<!-- 项目 -->
+	<dubbo:service cluster="failover" retries="2" timeout="60000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.ProjectService"
+		ref="ProjectService" version="${dubbo.service.version}">
+		<dubbo:method name="getWZOfCase" retries="2" timeout="7000" />
+		<dubbo:method name="createWZForMobile" retries="0"
+			timeout="5000" />
+		<dubbo:method name="getTaskSummary" timeout="10000" />
+		<!-- email发送 -->
+		<dubbo:method name="sendWzToUserByEmail" timeout="10000" retries="1" />
+		<!-- 更新微作评论数失败重试次数为0 -->
+		<dubbo:method name="updateWzCommentsCount" timeout="10000" retries="0" />
+		<dubbo:method name="getStatInfoEx" timeout="20000" />
+		<dubbo:method name="getProjectInfoSummary" timeout="15000" />
+		<dubbo:method name="getTaskSummaryNew" timeout="30000" />
+	</dubbo:service>
+
+	<!-- 日志服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		token="123" loadbalance="random" interface="com.dist.bdf.facade.service.LogService"
+		ref="LogService" version="${dubbo.service.version}" />
+
+	<!-- 安全服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.security.SecurityParaService"
+		ref="SecurityParaService" version="${dubbo.service.version}" />
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.security.SecurityService"
+		ref="SecurityService" version="${dubbo.service.version}" />
+
+	<!-- cad服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.cad.CadService"
+		ref="CadService" version="${dubbo.service.version}" />
+	<!-- 资讯服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.InformationService"
+		ref="InformationService" version="${dubbo.service.version}" />
+
+	<!-- 用户机构服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.UserOrgService"
+		ref="UserOrgService" version="${dubbo.service.version}">
+		<dubbo:method name="listAllUsers" timeout="8000" />
+		<dubbo:method name="getUserByLoginName" timeout="100000" />
+		<dubbo:method name="syncToLdapEx" timeout="3600000" />
+		<dubbo:method name="addUser" timeout="3600000" retries="0" />
+		<dubbo:method name="getCurrOrgUserTree" timeout="3600000" />
+		<dubbo:method name="updateUserBasicInfo" timeout="3600000" />
+	</dubbo:service>
+
+	<!-- 角色服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.RoleService"
+		ref="RoleService" version="${dubbo.service.version}" />
+
+	<!-- LDAP服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="4000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.LdapService"
+		ref="LdapService" version="${dubbo.service.version}" />
+		
+	<!--============== 消费服务 =================== -->
+	<dubbo:reference id="SgaUserService"
+		interface="com.dist.bdf.facade.service.sga.SgaUserService" check="false"
+		version="${dubbo.service.version}" />
+	<dubbo:reference id="SgaProjectService"
+		interface="com.dist.bdf.facade.service.sga.SgaProjectService" check="false"
+		version="${dubbo.service.version}" />
+	<dubbo:reference id="SgaCompanyService"
+		interface="com.dist.bdf.facade.service.sga.SgaCompanyService" check="false"
+		version="${dubbo.service.version}" />
+
+</beans>

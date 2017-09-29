@@ -1,0 +1,25 @@
+<!-- <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd" name="config">
+
+      terracottaConfig 需要放在cache节点前面
+    <terracottaConfig url="localhost:9510" rejoin="false" />
+    
+	<cache name="UserMemory" 
+	    maxElementsInMemory="10000"
+	    eternal="true"
+		timeToIdleSeconds="120" 
+		timeToLiveSeconds="120" 
+		overflowToDisk="false"
+		diskPersistent="false" 
+		diskExpiryThreadIntervalSeconds="120" />
+		
+	<cache name="OrgMemory" 
+	    maxElementsInMemory="10000"
+	    eternal="true"
+		timeToIdleSeconds="120" 
+		timeToLiveSeconds="120" 
+		overflowToDisk="false"
+		diskPersistent="false" 
+		diskExpiryThreadIntervalSeconds="120" />	
+		
+</ehcache> -->

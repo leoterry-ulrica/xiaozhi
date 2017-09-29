@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+     <!-- 案例类型，提供给移动或者PC端 -->
+	<caseType name="XZ_CASETYPE_JYXM">
+	    <!-- 环节 -->
+		<tache name="招投标管理" />
+		<tache name="合同管理" />
+		<tache name="项目策划" />
+		<tache name="现场调研" />
+		<tache name="方案设计" />
+		<tache name="项目审查" />
+		<tache name="成果交付" />
+		<tache name="项目归档" />
+		<tache name="项目评奖" />
+		<tache name="其他" />
+	</caseType>
+</configuration>

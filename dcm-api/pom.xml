@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dist</groupId>
+		<artifactId>dcm-parent</artifactId>
+		<version>2.0.2-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>dcm-api</artifactId>
+	<packaging>jar</packaging>
+	<name>${project.artifactId}</name>
+	
+ 	<dependencies>
+		<!--bdp 模块间依赖 begin -->
+		<dependency>
+			<groupId>com.dist</groupId>
+			<artifactId>dcm-model</artifactId>
+			<version>2.0.2-SNAPSHOT</version>
+		</dependency>
+		<!--bdp 模块间依赖 end -->
+		
+	</dependencies>
+</project>

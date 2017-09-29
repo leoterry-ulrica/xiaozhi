@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dist</groupId>
+		<artifactId>dcm-parent</artifactId>
+		<version>2.0.2-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>dcm-common</artifactId>
+	<name>${project.artifactId}</name>
+
+	<dependencies>
+		<!-- 模块引用 begin -->
+		<dependency>
+			<groupId>com.dist</groupId>
+			<artifactId>dcm-base</artifactId>
+			<version>2.0.2-SNAPSHOT</version>
+		</dependency>
+		<!-- 模块引用 end -->
+		<!-- mongodb begin -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+		</dependency>
+		<!-- mongodb end -->
+		<!-- 统一配置中心 begin -->
+		<dependency>
+			<groupId>io.github.dist.xdiamond</groupId>
+			<artifactId>xdiamond-client</artifactId>
+		</dependency>
+		<!-- 统一配置中心 end -->
+	</dependencies>
+</project>

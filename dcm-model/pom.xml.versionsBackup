@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dist</groupId>
+		<artifactId>dcm-parent</artifactId>
+		<version>2.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>dcm-model</artifactId>
+	<name>${project.artifactId}</name>
+
+	<dependencies>
+		<!--bdp 模块间依赖 begin -->
+		<dependency>
+			<groupId>com.dist</groupId>
+			<artifactId>dcm-common</artifactId>
+			<version>2.0.1-SNAPSHOT</version>
+		</dependency>
+		<!--bdp 模块间依赖 end -->
+
+		<!-- alibaba json工具类 begin -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+		</dependency>
+		<!-- alibaba json工具类 end -->
+		<!-- mongodb begin -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+		</dependency>
+		<!-- mongodb end -->
+
+	</dependencies>
+</project>

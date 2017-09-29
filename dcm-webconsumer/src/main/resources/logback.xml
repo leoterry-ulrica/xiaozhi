@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- /*  * 配置文件描述：logback参数配置  * 作者：HeShun  * 创建时间：2013-8-14  */ -->
+<configuration debug="true">
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->  
+	<property name="LOG_HOME" value="${catalina.base:-./temp}/logs/${appName:-dist}" />
+	<!--定义日志文件的文件名，建议用工程名或项目名-->  
+	<property name="LOG_FFILE_NAME" value="bdp" />
+	<!-- 定义时间戳 -->
+	<timestamp key="byDay" datePattern="yyyy-MM-dd" />
+	<!--定义控制台输出 -->
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<!--定义过滤器 -->
+		<!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter"> <level>DEBUG</level> </filter> <filter class="ch.qos.logback.core.filter.EvaluatorFilter"> <evaluator name="myClass"> <expression>communication.contains("com.dgg")</expression> </evaluator> <onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> </filter> <Encoding>UTF-8</Encoding> <File>${log.base}_dao.log</File> <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> <FileNamePattern>${log.base}.%d{yyyy-MM-dd}_dao.log.zip </FileNamePattern> </rollingPolicy> -->
+		<!--定义排版格式 -->
+		<encoder>
+			<!-- d:时间,p:级别,c:类名,t:线程,F:源文件,L:行号,m:信息,n:换行 -->
+			<pattern>[%p]%d{yyyy-MM-dd HH:mm:ss}, %t [%c-%L], %m%n</pattern>
+		</encoder>
+	</appender>
+	<!-- 单独对指定的日志设定级别 –> 使该日志对象输出地日志级别限定在设定的级别，不受根级别的限制 -->
+<!-- 	如果放开这段代码，会对让<root>设置不起作用 -->
+<!-- 	<logger name="com.dgg" additivity="false"> -->
+<!-- 		<level value="debug" /> -->
+<!-- 		<appender-ref ref="RootConsoleAppender" /> -->
+<!-- 	</logger> -->
+	<!-- 定义指定文件名称的输出 -->
+	<!-- 此处设定的文件名称是动态设置的 即 每天生成一个文件 用于记录当天的文件信息 -->
+	<!-- 按照每天生成日志文件 -->   
+    <appender name="fileAppender"  class="ch.qos.logback.core.rolling.RollingFileAppender">   
+		<!-- 配置文件输出格式 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${LOG_HOME}/${LOG_FFILE_NAME}-%d{yyyy-MM-dd}.log</FileNamePattern> 
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>   
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"> 
+        	<pattern>[%p]%d{yyyy-MM-dd HH:mm:ss}, %t [%c-%L], %m%n</pattern>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--> 
+            <!--  <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>    -->
+        </encoder> 
+        <!--日志文件最大的大小-->
+       <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         <MaxFileSize>100MB</MaxFileSize>
+       </triggeringPolicy>
+    </appender> 
+	<!-- 设置根 的日志级别 -->
+	<root>
+		<level value="INFO" />
+        <!-- 	不要忘记了对于appender的 引用 根元素是配置文件的入口 -->
+ 		<appender-ref ref="consoleAppender" />
+		<appender-ref ref="fileAppender" />
+	</root>
+</configuration>

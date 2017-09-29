@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dist</groupId>
+		<artifactId>dcm-parent</artifactId>
+		<version>2.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>dcm-manager</artifactId>
+	<name>${project.artifactId}</name>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<!-- 模块引用 begin -->
+		<dependency>
+			<groupId>com.dist</groupId>
+			<artifactId>dcm-base</artifactId>
+			<version>2.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dist</groupId>
+			<artifactId>dcm-model</artifactId>
+			<version>2.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- 模块引用 end -->
+
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+		</dependency>
+		<!--Redis start -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
+		<!--Redis end -->
+		<!-- mongodb begin -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+		</dependency>
+		<!-- mongodb end -->
+		<!-- spring -->
+		<!-- 纯粹为了exclude commons-loging -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!--ECM about dependency begin -->
+		<dependency>
+			<groupId>com.ibm</groupId>
+			<artifactId>cmbicmsdk81</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.ecm</groupId>
+			<artifactId>syncServiceClient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.filenet</groupId>
+			<artifactId>contentEngine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.filenet</groupId>
+			<artifactId>stax-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.xml</groupId>
+			<artifactId>xlxpScanner</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.xml</groupId>
+			<artifactId>xlxpScannerUtils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.ecm</groupId>
+			<artifactId>p8cel10n</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.casemgmt</groupId>
+			<artifactId>acmapi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.filenet</groupId>
+			<artifactId>pe</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.ecm</groupId>
+			<artifactId>navigatorWeb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.json</groupId>
+			<artifactId>JSON4J</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.filenet</groupId>
+			<artifactId>engine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.filenet</groupId>
+			<artifactId>Engine-ejb-ws</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.filenet</groupId>
+			<artifactId>engine-cbr-spi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.filenet</groupId>
+			<artifactId>Engine-jmx</artifactId>
+		</dependency>
+		<!--ECM about dependency end -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<exclusions>
+				<!-- 去除低版本3.15.0-GA -->
+				<exclusion>
+					<groupId>org.javassist</groupId>
+					<artifactId>javassist</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+</project>

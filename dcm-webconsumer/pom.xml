@@ -1,0 +1,264 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.dist</groupId>
+		<artifactId>dcm-parent</artifactId>
+		<version>2.0.2-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>dcm-webconsumer</artifactId>
+	<packaging>war</packaging>
+	<name>${project.artifactId}</name>
+
+	<!-- 依赖项定义 -->
+	<dependencies>
+		<!-- bdp 模块间依赖 begin -->
+		<dependency>
+			<groupId>com.dist</groupId>
+			<artifactId>dcm-api</artifactId>
+			<version>2.0.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dist</groupId>
+			<artifactId>dcm-manager</artifactId>
+			<version>2.0.2-SNAPSHOT</version>
+		</dependency>
+		<!-- bdp 模块间依赖 end -->
+
+		<!-- spring aop -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+		</dependency>
+
+		<!-- connection pool -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+		</dependency>
+
+		<!--任务调度 begin -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+		</dependency>
+		<!--任务调度 end -->
+
+		<!-- WEB begin -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
+		<!-- WEB end -->
+
+		<!-- SECURITY begin -->
+		<!-- <dependency> <groupId>org.apache.shiro</groupId> <artifactId>shiro-core</artifactId> 
+			</dependency> <dependency> <groupId>org.apache.shiro</groupId> <artifactId>shiro-spring</artifactId> 
+			</dependency> <dependency> <groupId>org.apache.shiro</groupId> <artifactId>shiro-web</artifactId> 
+			</dependency> <dependency> <groupId>org.apache.shiro</groupId> <artifactId>shiro-ehcache</artifactId> 
+			</dependency> -->
+		<!-- SECURITY end -->
+
+		<!-- LOGGING begin -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+
+		<!-- 代码直接调用log4j会被桥接到slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+		<!-- 代码直接调用common-logging会被桥接到slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<!-- 代码直接调用java.util.logging会被桥接到slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.log4jdbc</groupId>
+			<artifactId>log4jdbc</artifactId>
+		</dependency>
+		<!-- LOGGING end -->
+
+		<!-- 加入org.codehaus.jackson的包后，可以从Controller直接返回对象 begin -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+		</dependency>
+		<!-- 加入org.codehaus.jackson的包后，可以从Controller直接返回对象 end -->
+
+		<!-- oracle的驱动包 -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.thetransactioncompany</groupId>
+			<artifactId>cors-filter</artifactId>
+			<version>2.3</version>
+		</dependency>
+		<!-- <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> 
+			</dependency> -->
+
+		<!-- dubbo+zookeeper begin -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<exclusions>
+				<!-- 注意：必须去除spring依赖，否则导致jar包冲突 -->
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.sgroschupf</groupId>
+			<artifactId>zkclient</artifactId>
+		</dependency>
+		<!-- dubbo+zookeeper end -->
+
+		<!-- druid数据库连接池 begin -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+		</dependency>
+		<!--druid数据库连接池 end -->
+
+		<!--office web apps begin -->
+		<dependency>
+			<groupId>com.caucho</groupId>
+			<artifactId>hessian</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hyc</groupId>
+			<artifactId>edes-interface</artifactId>
+		</dependency>
+		<!--office web apps end -->
+
+		<!-- 统一配置中心 begin -->
+		<dependency>
+			<groupId>io.github.dist.xdiamond</groupId>
+			<artifactId>xdiamond-client</artifactId>
+		</dependency>
+		<!-- 统一配置中心 end -->
+
+		<!-- springfox begin -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+		</dependency>
+		<!-- springfox end -->
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+		</dependency>
+
+		<!-- freemarker依赖 begin -->
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+		</dependency>
+		<!-- freemarker依赖 end -->
+
+		<!-- 获取文件mimetype begin -->
+		<dependency>
+			<groupId>net.sf.jmimemagic</groupId>
+			<artifactId>jmimemagic</artifactId>
+		</dependency>
+		<!-- 获取文件mimetype end -->
+
+		<!-- TestNG begin -->
+		<dependency>
+			<groupId>com.dist</groupId>
+			<artifactId>bdf-test</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>jboss-logging-annotations</artifactId>
+					<groupId>org.jboss.logging</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hibernate-core</artifactId>
+					<groupId>org.hibernate</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- TestNG end -->
+		<!-- POJO之间映射工具类 begin -->
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+		</dependency>
+		<!-- POJO之间映射工具类 end -->
+
+		<!--Redis start -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
+		<!--Redis end -->
+
+		<!-- spring session begin -->
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+		</dependency>
+		<!-- spring session end -->
+	</dependencies>
+</project>

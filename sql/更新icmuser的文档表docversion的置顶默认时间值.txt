@@ -1,0 +1,1 @@
+update icmuser.docversion t set t.u27b3_gzpi_sticky = to_date('1900/1/1 04:00:43','yyyy/mm/dd hh24:mi:ss')  where  t.u27b3_gzpi_sticky is null;

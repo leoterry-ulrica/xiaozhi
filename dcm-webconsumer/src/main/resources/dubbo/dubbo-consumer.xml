@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-lazy-init="true">
+
+	<dubbo:application name="dubbo_consumer" />
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<!-- <dubbo:registry address="zookeeper://192.168.1.166:2181" check="false" 
+		/> -->
+	<!-- 集群 -->
+	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" 
+		check="false" />
+
+	<!-- 监控中心 -->
+	<dubbo:monitor address="${dubbo.monitor.address}" />
+
+	<!-- 要引用的服务，只要controller中引用，就得加入以下服务引用，check="false"可以忽略提供者接口的有效性 -->
+
+	<dubbo:reference id="CommonService"
+		interface="com.dist.bdf.facade.service.CommonService" check="false"
+		version="${dubbo.service.version}" />
+
+	<dubbo:reference id="UserOrgService"
+		interface="com.dist.bdf.facade.service.UserOrgService" check="false"
+		version="${dubbo.service.version}" />
+	<dubbo:reference id="GroupService"
+		interface="com.dist.bdf.facade.service.GroupService" check="false"
+		version="${dubbo.service.version}">
+	</dubbo:reference>
+	<dubbo:reference id="PrivService"
+		interface="com.dist.bdf.facade.service.PrivilegeService" check="false"
+		version="${dubbo.service.version}" />
+	<dubbo:reference id="RoleService"
+		interface="com.dist.bdf.facade.service.RoleService" check="false"
+		version="${dubbo.service.version}" />
+	<dubbo:reference id="ShareService"
+		interface="com.dist.bdf.facade.service.ShareService" check="false"
+		version="${dubbo.service.version}" />
+	<!-- ecm服务 -->
+	<dubbo:reference id="EcmMgmtService"
+		interface="com.dist.bdf.facade.service.EcmMgmtService" check="false"
+		version="${dubbo.service.version}" />
+	<dubbo:reference id="SocialService"
+		interface="com.dist.bdf.facade.service.SocialService" check="false"
+		version="${dubbo.service.version}" />
+	<!-- office online服务 -->
+	<dubbo:reference id="DOfficeWebService"
+		interface="com.dist.bdf.facade.service.DOfficeWebService" check="false"
+		version="${dubbo.service.version}" />
+	<!-- eds服务 -->
+	<dubbo:reference id="EdsService"
+		interface="com.dist.bdf.facade.service.EdsService" check="false"
+		version="${dubbo.service.version}" timeout="200000" />
+
+	<!-- 通用资料服务 -->
+	<dubbo:reference id="CommonMaterialService" interface="com.dist.bdf.facade.service.MaterialService" 
+		check="false" version="${dubbo.service.version}" />
+
+	<!-- 个人资料服务 -->
+	<dubbo:reference id="PersonalMaterialService"
+		interface="com.dist.bdf.facade.service.PersonalMaterialService" check="false"
+		version="${dubbo.service.version}" />
+		
+	  <!-- 所级资料服务 -->
+	  <dubbo:reference id="DepartmentMaterialService"
+		interface="com.dist.bdf.facade.service.DepartmentMaterialService" check="false"
+		version="${dubbo.service.version}" />
+		
+	  <!-- 院级资料服务 -->
+	  <dubbo:reference id="InstituteMaterialService"
+		interface="com.dist.bdf.facade.service.InstituteMaterialService" check="false"
+		version="${dubbo.service.version}" />
+	
+	  <!-- 项目级服务 -->
+	  <dubbo:reference id="ProjectMaterialService"
+		interface="com.dist.bdf.facade.service.ProjectMaterialService" check="false"
+		version="${dubbo.service.version}" />
+
+	<!-- 项目服务 -->
+	<dubbo:reference id="ProjectService"
+		interface="com.dist.bdf.facade.service.ProjectService" check="false"
+		version="${dubbo.service.version}" />
+		
+	<!-- 日志服务 -->
+	<dubbo:reference id="LogService"
+		interface="com.dist.bdf.facade.service.LogService" check="false"
+		version="${dubbo.service.version}" />
+		
+	<!-- 缓存服务 -->
+	<!-- <dubbo:reference id="DistributedCacheService"
+		interface="com.dist.bdf.facade.service.cache.DistributedCacheService" check="false"
+		version="${dubbo.service.version}" /> -->
+		
+	<!-- =========================== 公共服务 =======================-->
+	<!-- 企业信息服务 -->	
+	<dubbo:reference id="SgaCompanyService"
+		interface="com.dist.bdf.facade.service.sga.SgaCompanyService" check="false"
+		version="${dubbo.service.version}" />
+	<!-- 用户信息服务 -->	
+    <dubbo:reference id="SgaUserService"
+		interface="com.dist.bdf.facade.service.sga.SgaUserService" check="false"
+		version="${dubbo.service.version}" />
+	<!-- 项目信息服务 -->	
+    <dubbo:reference id="SgaProjectService"
+		interface="com.dist.bdf.facade.service.sga.SgaProjectService" check="false"
+		version="${dubbo.service.version}" />
+	<!-- 资讯服务 -->	
+    <dubbo:reference id="InformationService"
+		interface="com.dist.bdf.facade.service.InformationService" check="false"
+		version="${dubbo.service.version}" />
+	
+	<!-- =========================== 安全服务 =======================-->
+    <!-- 参数服务 -->	
+	<dubbo:reference id="SecurityParaService"
+		interface="com.dist.bdf.facade.service.security.SecurityParaService" check="false"
+		version="${dubbo.service.version}" />
+	 <!-- 安全业务服务 -->	
+	<dubbo:reference id="SecurityService"
+		interface="com.dist.bdf.facade.service.security.SecurityService" check="false"
+		version="${dubbo.service.version}" />
+	
+	<!-- =========================== CAD服务 =======================-->
+	<!-- cad业务服务 -->	
+	<dubbo:reference id="CadService"
+		interface="com.dist.bdf.facade.service.cad.CadService" check="false"
+		version="${dubbo.service.version}" />
+		
+</beans>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="bdp-service-file"
+  id="myeclipse.1456623342270"
+  context-root="/bdp-service-file"
+  j2ee-spec="1.7"
+  archive="bdp-service-file.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+

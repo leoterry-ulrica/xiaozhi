@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util.xsd"
+	default-lazy-init="true">
+
+	<!-- dev环境 -->
+	<beans profile="dev">
+		<bean id="xdiamondServerHost" class="java.lang.String">
+			<constructor-arg value="${profiles.server}" />
+		</bean>
+		<bean id="projectProfile" class="java.lang.String">
+			<constructor-arg value="sga-dev" />
+		</bean>
+		<bean id="projectSecretKey" class="java.lang.String">
+			<constructor-arg value="" />
+		</bean>
+	</beans>
+
+	<!-- test环境 -->
+	<beans profile="test">
+		<bean id="xdiamondServerHost" class="java.lang.String">
+			<constructor-arg value="${profiles.server}" />
+		</bean>
+		<bean id="projectProfile" class="java.lang.String">
+			<constructor-arg value="test" />
+		</bean>
+		<bean id="projectSecretKey" class="java.lang.String">
+			<constructor-arg value="" />
+		</bean>
+	</beans>
+
+	<!-- product环境 -->
+	<beans profile="product">
+		<bean id="xdiamondServerHost" class="java.lang.String">
+			<constructor-arg value="${profiles.server}" />
+		</bean>
+		<bean id="projectProfile" class="java.lang.String">
+			<constructor-arg value="product" />
+		</bean>
+		<!-- 生产环境的secretkey最好是通过tomcat setenv.sh传进来，不要显式配置在代码里 -->
+		<bean id="projectSecretKey" class="java.lang.String">
+			<!-- <constructor-arg value="${xdiamond.project.secretkey}" /> -->
+			<constructor-arg value="${xdiamond.project.secretkey}" />
+		</bean>
+	</beans>
+	
+	<!-- product cloud环境 -->
+	<beans profile="product-cloud">
+		<bean id="xdiamondServerHost" class="java.lang.String">
+		<!-- 	<constructor-arg value="${profiles.server}" /> -->
+			<constructor-arg value="192.168.200.56" />
+		</bean>
+		<bean id="projectProfile" class="java.lang.String">
+			<constructor-arg value="product-cloud" />
+		</bean>
+		<!-- 生产环境的secretkey最好是通过tomcat setenv.sh传进来，不要显式配置在代码里 -->
+		<bean id="projectSecretKey" class="java.lang.String">
+			<constructor-arg value="w33wy6m12nuowlag4qloko6r" />
+		</bean>
+	</beans>
+
+	<beans>
+
+		<bean id="xDiamondConfig"
+			class="io.github.xdiamond.client.spring.XDiamondConfigFactoryBean">
+			<property name="serverHost" ref="xdiamondServerHost" />
+			<property name="serverPort" value="5678" />
+			<property name="groupId" value="com.dist" />
+			<property name="artifactId" value="distconf-service-sga" />
+			<property name="version" value="1.0.0" />
+			<property name="profile" ref="projectProfile" />
+			<property name="secretKey" ref="projectSecretKey" />
+		</bean>
+		
+        <!-- 使用spring提供的PropertyPlaceholderConfigurer读取数据库配置信息.properties -->
+		<bean
+			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+             <!-- 方案1：本地临时要修改的配置 -->
+            <!-- <property name="location" value="classpath:local-uic.properties" /> -->
+            <!-- 方案2：使用propertiesArray -->
+			<!-- <property name="propertiesArray">
+				<util:list>
+					对于本地临时要修改的配置，可以像下面这样配置，注意不要把util:properties的内容提交到代码库里
+					<util:properties>
+					<prop key="myTempConfigKey">tempConfigValue</prop>
+					</util:properties>
+					<bean class="java.util.Properties" factory-bean="xDiamondConfig"
+						factory-method="getProperties">
+					</bean>
+				</util:list>
+			</property> -->
+			 <!-- 方案3：使用properties -->
+		    <property name="properties">
+             <bean id="xDiamondProperties" class="java.util.Properties"
+                factory-bean="xDiamondConfig" factory-method="getProperties">
+             </bean>
+          </property>
+	</bean>
+
+    <context:component-scan base-package="com.dist.bdf.conf">
+	</context:component-scan>
+
+	</beans>
+
+</beans>

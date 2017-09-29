@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop  http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!-- 启用spring mvc 注解 -->
+	<context:annotation-config />
+
+	<!-- 自动扫描且只扫描@Controller -->
+	<context:component-scan base-package="com.dist.bdf.consumer"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+
+	<!-- 解决：springMVC前端请求找不到资源路径（HTTP Status 404） -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"></bean>
+
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="UTF-8" />
+				<!-- 解决response Accept-Charset 大量输出问题 -->
+				<property name="writeAcceptCharset" value="false" />
+			</bean>
+			<!-- 将Jackson2HttpMessageConverter的默认格式化输出设为true -->
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="prettyPrint" value="true" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+
+	<!-- spring的处理文件上传的类
+	 maxUploadSize ：以字节为单位计算。当设为-1时表示无限制，默认是-1。
+	 1024000000：约1G
+	 这里申明的id必须为multipartResolver
+	 -->
+<!-- 	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+		<property name="maxUploadSize" value="1024000000" />
+	</bean> -->
+	<!-- 使用自定义扩展类 -->
+	<bean id="multipartResolver"
+		class="com.dist.bdf.base.upload.PJCommonsMultipartResolver">
+		<property name="maxUploadSize" value="-1" />
+	</bean> 
+
+	<!-- 所有swagger目录的访问，直接访问location指定的目录 -->
+	<mvc:resources location="/WEB-INF/swagger-ui/" mapping="/ant-ui/**"
+		cache-period="3600" />
+
+	<!-- Swagger config，注意放在此处，否则生成不了api doc -->
+	<bean class="com.dist.bdf.consumer.swagger.SwaggerConfig" />
+
+</beans>

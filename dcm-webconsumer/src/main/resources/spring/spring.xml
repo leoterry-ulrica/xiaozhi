@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/mvc  
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/aop    
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd"
+	default-lazy-init="true">
+
+	<description>Spring公共配置 </description>
+
+	<!-- 只对已注册到spring容器的bean起作用 -->
+	<!-- <context:annotation-config /> -->
+	<!-- 包含了annotation-config 的功能 -->
+	<context:component-scan base-package="com.dist.bdf">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<mvc:annotation-driven />
+
+	<!-- 读取配置文件资源 注意：多个properties文件出现时，bean的id设置为propertyConfigurer1，否则出现Could 
+		not resolve placeholder的错误 -->
+	<!-- <bean id="propertyConfigurer1" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
+		<property name="locations"> <list> 文件路径 <value>classpath:/server.properties</value> 
+		</list> </property> </bean> -->
+
+	<import resource="spring-profile.xml" />
+	<import resource="spring-redis.xml" />
+	<import resource="../dubbo/dubbo-consumer.xml" />
+
+
+	<!-- 定时清理临时文件 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="delTrigger" />
+			</list>
+		</property>
+		<property name="autoStartup" value="true" />
+	</bean>
+	<bean id="delTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="DelFileJobDetail" />
+		<property name="cronExpression" value="0 0 23 * * ?" /><!-- 每天23点触发一次：0 
+			0 23 * * ?， value="0 0/5 * * * ?"表示每5分钟 -->
+	</bean>
+	<bean id="DelFileJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- bean的名字默认小写开头 -->
+		<property name="targetObject" ref="commonController" />
+		<property name="targetMethod" value="clearTempDir" />
+		<!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+		<property name="concurrent" value="false" />
+	</bean>
+	<!-- 配置freeMarker的模板路径 -->
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		 <property name="templateLoaderPath" value="classpath:/template" />  
+        <property name="freemarkerSettings">  
+            <props>  
+                <prop key="template_update_delay">0</prop>  
+                <prop key="default_encoding">UTF-8</prop>  
+                <!-- 处理空值 -->
+                <prop key="classic_compatible">true</prop>
+            </props>  
+        </property>  
+	</bean>
+	
+	  <!-- bean之间属性复制 -->
+    <bean id="dozerMapper" class="org.dozer.spring.DozerBeanMapperFactoryBean" scope="singleton">
+        <property name="mappingFiles">
+            <list>
+                <value>classpath:spring/spring-dozermapping.xml</value>
+            </list>
+        </property>
+    </bean> 
+    <!-- 支持dubbo优雅停机（重要） -->
+	<bean
+		class="com.dist.bdf.manager.dubbo.DubboSpringContextClosedListener" />
+</beans>

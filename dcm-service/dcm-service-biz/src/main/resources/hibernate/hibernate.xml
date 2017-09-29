@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
+	default-lazy-init="true">
+
+	<!-- 数据源配置, 使用 BoneCP 数据库连接池 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${druid.pool.initialSize}" />
+		<property name="minIdle" value="${druid.pool.minIdle}" />
+		<property name="maxActive" value="${druid.pool.maxActive}" />
+
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${druid.pool.maxWait}" />
+
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${druid.pool.timeBetweenEvictionRunsMillis}" />
+
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${druid.pool.minEvictableIdleTimeMillis}" />
+
+		<!-- <property name="validationQuery" value="${druid.pool.validationQuery}" /> -->
+		<property name="testWhileIdle" value="${druid.pool.testWhileIdle}" />
+		<property name="testOnBorrow" value="${druid.pool.testOnBorrow}" />
+		<property name="testOnReturn" value="${druid.pool.testOnReturn}" />
+
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小（Oracle使用） -->
+		<property name="poolPreparedStatements" value="${druid.pool.poolPreparedStatements}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${druid.pool.maxOpenPreparedStatements}" />
+
+		<!-- 配置监控统计拦截的filters -->
+		<property name="filters" value="${druid.pool.filters}" />
+	</bean>
+
+	<!-- 定义Hibernate与连接工厂 -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+				<prop key="hibernate.cache.region.factory_class">${hibernate.cache.region.factory_class}</prop>
+				<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+				<prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
+				<prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
+			</props>
+		</property>
+		<!-- 配置Hibernate扫描@Entity的位置，开启后可以不使用hbm.xml来定义Entity（POJO）对象与数据库表的关联 -->
+		<property name="packagesToScan">
+			<list>
+				<value>com.**.entity</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 定义Hibernate事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 开启注解事务定义，由Spring扫描注解定义的事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 注册osiv拦截器，在请求期间保持session不被关闭以解决lazy加载导致no session错误 -->
+	<bean id="openSessionInViewInterceptor"
+		class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+</beans>

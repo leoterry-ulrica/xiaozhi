@@ -1,0 +1,324 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dist</groupId>
+		<artifactId>dcm-service</artifactId>
+		<version>2.0.2-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>dcm-service-biz</artifactId>
+	<packaging>war</packaging>
+	<name>${project.artifactId}</name>
+
+	<dependencies>
+
+		<!-- bdp 模块间依赖 begin -->
+		<dependency>
+			<groupId>com.dist</groupId>
+			<artifactId>dcm-api</artifactId>
+			<version>2.0.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dist</groupId>
+			<artifactId>dcm-manager</artifactId>
+			<version>2.0.2-SNAPSHOT</version>
+		</dependency>
+		<!-- bdp 模块间依赖 end -->
+
+		<!-- PERSISTENCE begin -->
+		<!-- hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+		</dependency>
+
+		<!-- spring -->
+		<!-- 纯粹为了exclude commons-loging -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- spring data access -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+		</dependency>
+
+		<!-- spring aop -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+		</dependency>
+
+		<!-- connection pool -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+		</dependency>
+
+		<!-- PERSISTENCE end -->
+
+		<!-- SECURITY begin -->
+		<!-- <dependency> <groupId>org.apache.shiro</groupId> <artifactId>shiro-core</artifactId> 
+			</dependency> <dependency> <groupId>org.apache.shiro</groupId> <artifactId>shiro-spring</artifactId> 
+			</dependency> <dependency> <groupId>org.apache.shiro</groupId> <artifactId>shiro-web</artifactId> 
+			</dependency> <dependency> <groupId>org.apache.shiro</groupId> <artifactId>shiro-ehcache</artifactId> 
+			</dependency> -->
+		<!-- SECURITY end -->
+
+		<!-- JSR303 BeanValidator -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+
+		</dependency>
+
+		<!-- JSON begin -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-jaxb-annotations</artifactId>
+		</dependency>
+		<!-- JSON end -->
+
+		<!-- LOGGING begin -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+
+		<!-- 代码直接调用log4j会被桥接到slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+		<!-- 代码直接调用common-logging会被桥接到slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<!-- 代码直接调用java.util.logging会被桥接到slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.log4jdbc</groupId>
+			<artifactId>log4jdbc</artifactId>
+		</dependency>
+		<!-- LOGGING end -->
+
+		<dependency>
+			<groupId>com.zhuozhengsoftware</groupId>
+			<artifactId>pageoffice</artifactId>
+		</dependency>
+
+		<!-- GENERAL UTILS begin -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+
+		</dependency>
+		<!-- joda -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time-jsptags</artifactId>
+		</dependency>
+		<!-- joda for jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-joda</artifactId>
+
+		</dependency>
+		<!-- GENERAL UTILS end -->
+
+		<!-- TestNG begin -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+		</dependency>
+		<!-- <dependency> <groupId>org.assertj</groupId> <artifactId>assertj-core</artifactId> 
+			</dependency> -->
+		<!-- TestNG end -->
+
+		<!-- 加入org.codehaus.jackson的包后，可以从Controller直接返回对象 -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
+		<!-- oracle的驱动包 -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.thetransactioncompany</groupId>
+			<artifactId>cors-filter</artifactId>
+			<version>2.3</version>
+		</dependency>
+		<!-- <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> 
+			</dependency> -->
+
+		<!-- dubbo+zookeeper begin -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<exclusions>
+				<!-- 注意：必须去除spring依赖，否则导致jar包冲突 -->
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.sgroschupf</groupId>
+			<artifactId>zkclient</artifactId>
+		</dependency>
+		<!-- dubbo+zookeeper end -->
+
+		<!--ECM about dependency begin -->
+		<!-- <dependency> <groupId>com.ibm.filenet</groupId> <artifactId>contentEngine</artifactId> 
+			</dependency> <dependency> <groupId>com.ibm.filenet</groupId> <artifactId>stax-api</artifactId> 
+			</dependency> <dependency> <groupId>com.ibm.xml</groupId> <artifactId>xlxpScanner</artifactId> 
+			</dependency> <dependency> <groupId>com.ibm.xml</groupId> <artifactId>xlxpScannerUtils</artifactId> 
+			</dependency> <dependency> <groupId>com.ibm.ecm</groupId> <artifactId>p8cel10n</artifactId> 
+			</dependency> <dependency> <groupId>com.ibm.casemgmt</groupId> <artifactId>acmapi</artifactId> 
+			</dependency> <dependency> <groupId>com.ibm.filenet</groupId> <artifactId>pe</artifactId> 
+			</dependency> -->
+		<!--ECM about dependency end -->
+
+		<!--ldap begin -->
+		<dependency>
+			<groupId>com.unboundid</groupId>
+			<artifactId>unboundid-ldapsdk</artifactId>
+		</dependency>
+		<!--ldap end -->
+
+		<!--任务调度 begin -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+		</dependency>
+		<!--任务调度 end -->
+
+		<!-- druid数据库连接池 begin -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+		</dependency>
+		<!--druid数据库连接池 end -->
+
+		<dependency>
+			<groupId>com.ibm.json</groupId>
+			<artifactId>JSON4J_Apache</artifactId>
+		</dependency>
+
+		<!--office web apps begin -->
+		<dependency>
+			<groupId>com.caucho</groupId>
+			<artifactId>hessian</artifactId>
+		</dependency>
+		<!--office web apps end -->
+
+		<dependency>
+			<groupId>eu.medsea.mimeutil</groupId>
+			<artifactId>mime-util</artifactId>
+		</dependency>
+
+		<!-- 统一配置中心 begin -->
+		<dependency>
+			<groupId>io.github.dist.xdiamond</groupId>
+			<artifactId>xdiamond-client</artifactId>
+		</dependency>
+		<!-- 统一配置中心 end -->
+
+		<!-- 汉字转拼音工具包 begin -->
+		<dependency>
+			<groupId>com.belerweb</groupId>
+			<artifactId>pinyin4j</artifactId>
+		</dependency>
+		<!-- 汉字转拼音工具包 end -->
+
+		<!-- mongodb begin -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+		</dependency>
+		<!-- mongodb end -->
+		<!-- POJO之间映射工具类dozer begin -->
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+		</dependency>
+		<!-- POJO之间映射工具类dozer end -->
+	</dependencies>
+</project>

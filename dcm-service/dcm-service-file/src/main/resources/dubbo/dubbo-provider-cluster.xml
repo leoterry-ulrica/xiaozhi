@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-lazy-init="true">
+
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="dubbo_provider_file" />
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<!-- <dubbo:registry address="zookeeper://192.168.1.166:2181" check="false"/> -->
+	<!-- 集群 -->
+	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}"
+		check="false" />
+
+	<!-- 用dubbo协议在20880端口暴露服务，端口可自定义，可用于dubbo伪集群方式 -->
+	<dubbo:protocol name="dubbo" port="20884" />
+	<!-- 定义监控中心 -->
+	<!-- <dubbo:monitor address="192.168.1.166:7070" /> -->
+	<dubbo:monitor address="${dubbo.monitor.address}" />
+
+	<!-- 声明需要暴露的服务接口，集群默认方式（cluster）：failover；负载均衡策略（loadbalance）：random，随机 -->
+	
+	<!-- 文件服务 -->
+	<dubbo:service cluster="failover" retries="2" timeout="3600000"
+		loadbalance="random" interface="com.dist.bdf.facade.service.file.FileService"
+		ref="FileService" version="${dubbo.service.version}">
+	</dubbo:service>
+	
+	<!-- 项目信息服务 -->	
+    <dubbo:reference id="SgaProjectService"
+		interface="com.dist.bdf.facade.service.sga.SgaProjectService" check="false"
+		version="${dubbo.service.version}" />
+	<!-- cad服务 -->	
+    <dubbo:reference id="CadService"
+		interface="com.dist.bdf.facade.service.cad.CadService" check="false"
+		version="${dubbo.service.version}" />
+	<!-- 公共用户服务 -->	
+    <dubbo:reference id="SgaUserService"
+		interface="com.dist.bdf.facade.service.sga.SgaUserService" check="false"
+		version="${dubbo.service.version}" />
+	
+</beans>
